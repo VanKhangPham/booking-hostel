@@ -1,7 +1,7 @@
 
 ---
 
-## 🚀 Chức năng chính
+##  Chức năng chính
 
 - Đăng ký / Đăng nhập người dùng
 - Tạo / Sửa / Xóa khách sạn
@@ -10,7 +10,7 @@
 
 ---
 
-## 🛠️ Công nghệ sử dụng
+##  Công nghệ sử dụng
 
 - **Backend:** Node.js, Express.js
 - **Frontend:** EJS, HTML, CSS, JavaScript
@@ -19,15 +19,15 @@
 
 ---
 
-## 🧑‍💻 Phân công công việc
+## Phân công công việc
 
 | Thành viên | Phụ trách |
 |------------|-----------|
-| 👤 Người 1 | Thiết kế model: `User`, `Hotel`, `Booking` |
-| 👤 Người 2 | Xử lý các route: `auth`, `hotels`, `bookings`, middleware |
-| 👤 Người 3 | Giao diện người dùng: EJS views (auth, hotels, bookings) |
-| 👤 Người 4 | Giao diện và hiệu ứng: CSS, JS |
-| 👤 Người 5 | Tích hợp hệ thống, viết `app.js`, kiểm thử |
+| 👤 TV 1 | Thiết kế model: `User`, `Hotel`, `Booking` |
+| 👤 TV 2 | Xử lý các route: `auth`, `hotels`, `bookings`, middleware |
+| 👤 TV 3 | Giao diện người dùng: EJS views (auth, hotels, bookings) |
+| 👤 TV 4 | Giao diện và hiệu ứng: CSS, JS |
+| 👤 TV 5 | Tích hợp hệ thống, viết `app.js`, kiểm thử |
 
 ---
 
