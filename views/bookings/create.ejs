@@ -1,0 +1,80 @@
+<%- include('../partials/header') %>
+
+<h1 class="mb-4">Đặt <%= hotel.name %></h1>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-4">
+      <img src="<%= hotel.images[0] %>" class="card-img-top" alt="<%= hotel.name %>" onerror="this.onerror=null;this.src='/img/default-hotel.jpg';">
+      <div class="card-body">
+        <h5 class="card-title"><%= hotel.name %></h5>
+        <p class="card-text"><%= hotel.address %>, <%= hotel.city %></p>
+        <p class="card-text">$<%= hotel.price %> per night</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3>Chi tiết đặt phòng</h3>
+      </div>
+      <div class="card-body">
+        <form action="/bookings" method="POST">
+          <input type="hidden" name="hotelId" value="<%= hotel._id %>">
+          
+          <div class="mb-3">
+            <label for="checkIn" class="form-label">Ngày nhận phòng</label>
+            <input type="date" class="form-control" id="checkIn" name="checkIn" required min="<%= new Date().toISOString().split('T')[0] %>">
+          </div>
+          
+          <div class="mb-3">
+            <label for="checkOut" class="form-label">Ngày trả phòng</label>
+            <input type="date" class="form-control" id="checkOut" name="checkOut" required min="<%= new Date().toISOString().split('T')[0] %>">
+          </div>
+          
+          <div class="mb-3">
+            <label for="guests" class="form-label"> Số lượng khách</label>
+            <input type="number" class="form-control" id="guests" name="guests" min="1" required>
+          </div>
+          
+          <div class="mb-3">
+            <label for="rooms" class="form-label">Số phòng</label>
+            <input type="number" class="form-control" id="rooms" name="rooms" min="1" max="<%= hotel.rooms %>" required>
+          </div>
+          
+          <button type="submit" class="btn btn-success">Xác nhận đặt chỗ</button>
+          <a href="/hotels/<%= hotel._id %>" class="btn btn-secondary">Thoát</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Add client-side validation
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkInInput = document.getElementById('checkIn');
+    const checkOutInput = document.getElementById('checkOut');
+    
+    checkInInput.addEventListener('change', function() {
+      checkOutInput.min = checkInInput.value;
+      if (checkOutInput.value && checkOutInput.value < checkInInput.value) {
+        checkOutInput.value = checkInInput.value;
+      }
+    });
+    
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+      const checkIn = new Date(checkInInput.value);
+      const checkOut = new Date(checkOutInput.value);
+      
+      if (checkOut <= checkIn) {
+        event.preventDefault();
+        alert('Check-out date must be after check-in date');
+      }
+    });
+  });
+</script>
+
+<%- include('../partials/footer') %>

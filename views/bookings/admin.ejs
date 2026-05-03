@@ -1,0 +1,96 @@
+<%- include('../partials/header') %>
+
+<h1 class="mb-4">Quản lý đặt phòng</h1>
+
+<div class="row mb-3">
+  <div class="col-md-6">
+    <form action="/bookings/admin" method="GET" class="d-flex">
+      <select name="status" class="form-select me-2">
+        <option value="">Tất cả trạng thái</option>
+        <option value="pending">Chưa xử lý</option>
+        <option value="confirmed">Đã xác nhận</option>
+        <option value="cancelled">Đã hủy</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Lọc</button>
+    </form>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Hotel</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Rooms</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (bookings.length > 0) { %>
+        <% bookings.forEach(booking => { %>
+          <tr>
+            <td><%= booking._id.toString().substr(-6) %></td>
+            <td><%= booking.user.name %></td>
+            <td><%= booking.hotel.name %></td>
+            <td><%= booking.checkIn.toLocaleDateString() %></td>
+            <td><%= booking.checkOut.toLocaleDateString() %></td>
+            <td><%= booking.rooms %></td>
+            <td>$<%= booking.totalPrice %></td>
+            <td>
+              <span class="badge <%= booking.status === 'confirmed' ? 'bg-success' : (booking.status === 'pending' ? 'bg-warning' : 'bg-danger') %>">
+                <%= booking.status.toUpperCase() %>
+              </span>
+            </td>
+            <td>
+              <div class="btn-group">
+                <a href="/bookings/<%= booking._id %>" class="btn btn-sm btn-info">Xem</a>
+                <% if (booking.status !== 'cancelled') { %>
+                  <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#statusModal<%= booking._id %>">
+                    Update Status
+                  </button>
+                <% } %>
+              </div>
+              
+              <!-- Status Modal -->
+              <div class="modal fade" id="statusModal<%= booking._id %>" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Cập nhật trạng thái đặt chỗ</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="/bookings/<%= booking._id %>/status?_method=PUT" method="POST">
+                        <div class="mb-3">
+                          <label for="status" class="form-label">Status</label>
+                          <select class="form-select" id="status" name="status">
+                            <option value="pending" <%= booking.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                            <option value="confirmed" <%= booking.status === 'confirmed' ? 'selected' : '' %>>Confirmed</option>
+                            <option value="cancelled" <%= booking.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                          </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr>
+          <td colspan="9" class="text-center">Không tìm thấy  .</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../partials/footer') %>

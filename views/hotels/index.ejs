@@ -1,0 +1,41 @@
+<%- include('../partials/header') %>
+
+<h1 class="mb-4">Khách sạn có sẵn</h1>
+
+<div class="row mb-3">
+  <div class="col-md-6">
+    <form action="/hotels" method="GET" class="d-flex">
+      <input type="text" name="search" class="form-control me-2" placeholder="Tìm kiếm khách sạn...">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </div>
+</div>
+
+<div class="row">
+  <% if (hotels.length > 0) { %>
+    <% hotels.forEach(hotel => { %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="<%= hotel.images[0] %>" class="card-img-top" alt="<%= hotel.name %>" onerror="this.onerror=null;this.src='/img/default-hotel.jpg';">
+          <div class="card-body">
+            <h5 class="card-title"><%= hotel.name %></h5>
+            <p class="card-text"><%= hotel.city %></p>
+            <p class="card-text">$<%= hotel.price %> per night</p>
+            <div class="d-flex justify-content-between">
+              <a href="/hotels/<%= hotel._id %>" class="btn btn-primary">Xem chi tiết</a>
+              <% if (currentUser && currentUser.isAdmin) { %>
+                <a href="/hotels/<%= hotel._id %>/edit" class="btn btn-secondary">Chỉnh sửa</a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <div class="col-12">
+      <div class="alert alert-info">Không tìm thấy khách sạn nào.</div>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>
