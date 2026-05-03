@@ -1,0 +1,50 @@
+<%- include('../partials/header') %>
+
+<h1 class="mb-4">Phòng đã đặt</h1>
+
+<div class="row">
+  <% if (bookings.length > 0) { %>
+    <% bookings.forEach(booking => { %>
+      <div class="col-md-6 mb-4">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Booking #<%= booking._id.toString().substr(-6) %></h5>
+            <span class="badge <%= booking.status === 'confirmed' ? 'bg-success' : (booking.status === 'pending' ? 'bg-warning' : 'bg-danger') %>">
+              <%= booking.status.toUpperCase() %>
+            </span>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title"><%= booking.hotel.name %></h5>
+            <p class="card-text">
+              <strong>Check-in:</strong> <%= booking.checkIn.toLocaleDateString() %><br>
+              <strong>Check-out:</strong> <%= booking.checkOut.toLocaleDateString() %><br>
+              <strong>Guests:</strong> <%= booking.guests %><br>
+              <strong>Rooms:</strong> <%= booking.rooms %><br>
+              <strong>Total Price:</strong> $<%= booking.totalPrice %>
+            </p>
+            <div class="d-flex justify-content-between">
+              <a href="/bookings/<%= booking._id %>" class="btn btn-primary">Xem chi tiết</a>
+              <% if (booking.status !== 'cancelled') { %>
+                <form action="/bookings/<%= booking._id %>/cancel?_method=PUT" method="POST">
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this booking?')">Thoát</button>
+                </form>
+              <% } %>
+            </div>
+          </div>
+          <div class="card-footer text-muted">
+            Booked on <%= booking.createdAt.toLocaleDateString() %>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <div class="col-12">
+      <div class="alert alert-info">
+        Bạn chưa có bất kỳ đặt chỗ nào.
+        <a href="/hotels" class="alert-link">Duyệt khách sạn</a> to make a booking.
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

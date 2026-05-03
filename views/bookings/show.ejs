@@ -1,0 +1,39 @@
+<%- include('../partials/header') %>
+
+<div class="row">
+  <div class="col-md-8 mx-auto">
+    <div class="card">
+      <div class="card-header">
+        <h3>Chi tiết đặt chỗ</h3>
+        <span class="badge <%= booking.status === 'confirmed' ? 'bg-success' : (booking.status === 'pending' ? 'bg-warning' : 'bg-danger') %>">
+          <%= booking.status.toUpperCase() %>
+        </span>
+      </div>
+      <div class="card-body">
+        <h4>Hotel Information</h4>
+        <p><strong>Name:</strong> <%= booking.hotel.name %></p>
+        <p><strong>Address:</strong> <%= booking.hotel.address %>, <%= booking.hotel.city %></p>
+        
+        <hr>
+        
+        <h4>Booking Information</h4>
+        <p><strong>Booking ID:</strong> <%= booking._id %></p>
+        <p><strong>Check-in Date:</strong> <%= booking.checkIn.toLocaleDateString() %></p>
+        <p><strong>Check-out Date:</strong> <%= booking.checkOut.toLocaleDateString() %></p>
+        <p><strong>Number of Guests:</strong> <%= booking.guests %></p>
+        <p><strong>Number of Rooms:</strong> <%= booking.rooms %></p>
+        <p><strong>Total Price:</strong> $<%= booking.totalPrice %></p>
+        <p><strong>Booking Status:</strong> <%= booking.status %></p>
+        <p><strong>Booking Date:</strong> <%= booking.createdAt.toLocaleDateString() %></p>
+        
+        <% if (booking.status !== 'cancelled') { %>
+          <form action="/bookings/<%= booking._id %>/cancel?_method=PUT" method="POST">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this booking?')">Hủy đặt chỗ</button>
+          </form>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
